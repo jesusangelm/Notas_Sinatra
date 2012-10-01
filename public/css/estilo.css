@@ -1,0 +1,128 @@
+body  {
+  margin: 35px auto;
+  width: 640px;
+  background: #ddd;
+}
+
+header {
+  text-align: center;
+  margin: 0 0 20px;
+}
+
+header h1 {
+  display: inline;
+  font-size: 32px;
+}
+
+header h2 {
+  font-size: 16px;
+  font-style: italic;
+  color: #999;
+}
+
+#main {
+  margin: 0 0 20px;
+}
+
+#add {
+  margin: 0 0 20px;
+}
+
+#edit {
+  margin: 0 0 20px;
+}
+
+#add textarea {
+  height: 30px;
+  width: 510px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+#add input {
+  height: 50px;
+  width: 100px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+#edit textarea {
+  height: 30px;
+  width: 480px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+#edit input[type=submit] {
+  height: 50px;
+  width: 100px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+#edit input[type=checkbox] {
+  height: 50px;
+  width: 20px;
+}
+
+article {
+  border: 1px solid #b6b6b6;
+  border-top: none;
+  padding: 15px 10px;
+  background: #eee;
+}
+
+article:first-of-type {
+  border: 1px solid #b6b6b6;
+}
+
+article:nth-child(even) {
+  background: #fafafa;
+}
+
+
+article.complete {
+  background: #DAFEDD;
+}
+
+p {
+  margin: 0 0 5px;
+}
+
+.meta {
+  font-size: 0.8em;
+  font-style: italic;
+  color: #888;
+}
+
+.links {
+  font-size: 1.8em;
+  line-height: 0.8em;
+  float: right;
+  margin: -10px 0 0;
+}
+
+.links a {
+  display: block;
+  text-decoration: none;
+}
+
+a, a:visited, a:active {
+  color: #575757;
+  text-decoration: none;
+}
+
+article a:hover {
+  color: #CC6600;
+  text-decoration: none;
+  text-shadow: #CC6600 0px 0px 1px;
+  border-bottom: thin solid #e83119;
+}
+
+.notice {
+  color: green;
+}
+
+.error {
+  color: red;
+}

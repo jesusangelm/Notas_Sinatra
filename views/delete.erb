@@ -1,0 +1,10 @@
+<% if @nota %>
+  <p>Estas a punto de eliminar la Nota: <strong><em><%=h @nota.content %></em></strong></p>
+  <form action="/<%= @nota.id %>" method="post" accept-charset="utf-8">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="SI, Eliminala!" /> -
+    <a href="/<%= @nota.id %>">Cancelar!</a>
+  </form>
+<% else %>
+  <p>Nota no Encontrada...</p>
+<% end %>

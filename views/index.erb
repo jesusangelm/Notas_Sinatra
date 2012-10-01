@@ -1,0 +1,16 @@
+<section id="add">
+  <form action="/" method="post" accept-charset="utf-8">
+    <textarea name="content" placeholder="Tu info aqui..."></textarea>
+    <input type="submit" value="Guardar" />
+  </form>
+</section>
+
+<% @notas.each do |nota| %>
+  <article>
+    <p>
+      <%=h nota.content %>
+      <span><a href="/<%= nota.id %>">Editar</a></span>
+    </p>
+    <p class="meta">Creado: <%= nota.created_at %></p>
+  </article>
+<% end %>

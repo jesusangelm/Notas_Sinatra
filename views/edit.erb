@@ -1,0 +1,10 @@
+<% if @nota %>
+  <form action="/<%= @nota.id %>" method="post" id="edit" accept-charset="utf-8">
+    <input type="hidden" name="_method" value="put" />
+    <textarea name="content"><%=h @nota.content  %></textarea>
+    <input type="submit" value="Modificar" />
+  </form>
+  <p><a href="/<%= @nota.id %>/delete">Eliminar!</a></p>
+<% else %>
+  <p>Nota no encontrada...</p>
+<% end %>
