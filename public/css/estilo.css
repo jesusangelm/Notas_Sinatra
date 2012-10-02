@@ -126,3 +126,11 @@ article a:hover {
 .error {
   color: red;
 }
+
+nav li {
+  display: inline-block;
+  list-style: none;
+  padding: 5px;
+  font: bold 14px verdana, sans-serif;
+  text-shadow: #585858  0px 0px 2px;
+}

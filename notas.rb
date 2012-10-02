@@ -1,11 +1,18 @@
 require "rubygems"
 require "sinatra"
-require "sinatra/flash"
+#require "sinatra/flash"
+require "rack-flash"
 require "sinatra/redirect_with_flash"
-
+require "dm-core"
+require "dm-migrations"
+require "digest/sha1"
+require "sinatra-authentication"
 Bundler.require
 
+use Rack::Session::Cookie, :secret => "noseQUE$%$#^$#esEsTo...P3r0Bueh!"
+
 enable :sessions
+use Rack::Flash
 
 SITE_TITLE = "Notas - Venezuela"
 SITE_DESCRIPTION = "Informacion que solo tiene significado para ti."
@@ -28,10 +35,16 @@ class Nota
   property :content, Text, :required => true
   property :created_at, DateTime
   property :updated_at, DateTime
+
+  #belongs_to :DmUser
+end
+
+class DmUser
+  has n, :notas
 end
 
 DataMapper.finalize
-Nota.auto_upgrade!
+DataMapper.auto_upgrade!
 
 helpers do
   include Rack::Utils
@@ -43,7 +56,9 @@ end
 #                Realiza una consulta en la BD de todas las 
 #                notas existentes y las muestra en la pagina index.
 get "/" do
-  @notas = Nota.all :order => :id.desc
+  #@notas = Nota.all :order => :id.desc
+  #@notas = current_user.db_instance.notas
+  @notas = Nota.all( :dm_user_id => current_user.id )
   @title = "Notas"
   if @notas.empty?
     flash[:error] = "No se encontraron Notas... Agrege una."
@@ -56,10 +71,12 @@ end
 #                 almacena en la BD la nota escrita
 #                 en el formulario de la pagina index.
 post "/" do
+  login_required
   n = Nota.new
   n.content = params[:content]
   n.created_at = Time.now
   n.updated_at = Time.now
+  n.dm_user_id = current_user.id
   if n.save
     redirect "/", :notice => "Nota guardada!"
   else
@@ -71,7 +88,8 @@ end
 #               muestra el contenido de la nota en un formulario
 #               para su edicion.
 get "/:id" do
-  @nota = Nota.get params[:id]
+  login_required
+  @nota = Nota.get params[:id] 
   @title = "Estas editando la Nota ##{params[:id]}"
   if @nota
     erb :edit
@@ -84,6 +102,7 @@ end
 #                 guarda en la BD la nota modificada en el formulario
 #                 generado por la Accion Edit de arriba.
 put "/:id" do
+  login_required
   n = Nota.get params[:id]
   unless n
     redirect "/", :error => "No se ha encontrado esta Nota"
@@ -101,6 +120,7 @@ end
 # Accion similar a la Edit Action, solo que esta solo muestra el contenido
 # de la nota y pregunta por la confirmacion si se desea eliminar o cancelar.
 get "/:id/delete" do
+  login_required
   @nota = Nota.get params[:id]
   @title = "Confirma la eliminacion de la Nota ##{params[:id]}"
   if @nota
@@ -113,6 +133,7 @@ end
 # Delete Action - Accion eliminar  la nota seleccionada (por su id)
 #                 elimina la nota mostrada de la BD.
 delete "/:id" do
+  login_required
   n = Nota.get params[:id]
   if n.destroy
     redirect "/", :notice => "Nota Eliminada!"

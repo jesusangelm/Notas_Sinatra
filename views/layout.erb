@@ -14,6 +14,17 @@
         <h1><a href="/"><%= SITE_TITLE %></a></h1>
         <h2><%= SITE_DESCRIPTION %></h2>
       </hgroup>
+      <nav>
+        <ul>
+          <% if logged_in? %>
+          <li><%= "Bienvenid@, " + current_user.email %></li>
+          <li>| <a href="/users/<%= current_user.id %>/edit">Mi cuenta</a></li>
+          <li>| <a href="/logout">Salir</a></li>
+          <% else %>
+          <li><a href="/login">Entrar</a> | <a href="/signup">Registrarse</a></li>
+          <% end %>
+        </ul>
+      </nav>
     </header>
 
     <div id="main">
@@ -27,7 +38,6 @@
 
       <%= yield %>
     </div>
-
 
     <footer>
       <p><small>JAM &copy; 2012 - Isla de Margarita - Venezuela.</small></p>
