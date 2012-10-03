@@ -60,11 +60,12 @@ get "/" do
   #@notas = current_user.db_instance.notas
   @notas = Nota.all( :dm_user_id => current_user.id )
   @title = "Notas"
-  if @notas.empty?
-    flash[:error] = "No se encontraron Notas... Agrege una."
-  end
   
   erb :index
+end
+
+get "/favicon.ico" do
+  redirect "/"
 end
 
 # Create Action - Accion guardar la nota.
@@ -91,10 +92,14 @@ get "/:id" do
   login_required
   @nota = Nota.get params[:id] 
   @title = "Estas editando la Nota ##{params[:id]}"
-  if @nota
-    erb :edit
-  else
-    redirect "/", :error => "No se ha encontrado la Nota ##{params[:id]}"
+  if @nota && @nota.dm_user_id == current_user.id
+    if @nota
+      erb :edit
+    else
+      redirect "/", :error => "No se ha encontrado la Nota ##{params[:id]}"
+    end
+  else  
+    redirect "/", :error => "Esta nota no te pertenece o no existe"
   end
 end
 
@@ -123,10 +128,14 @@ get "/:id/delete" do
   login_required
   @nota = Nota.get params[:id]
   @title = "Confirma la eliminacion de la Nota ##{params[:id]}"
-  if @nota
-    erb :delete
+  if @nota && @nota.dm_user_id == current_user.id
+    if @nota
+      erb :delete
+    else
+      redirect "/", :error => "No se ha encontrado esta Nota..."
+    end
   else
-    redirect "/", :error => "No se ha encontrado esta Nota..."
+    redirect "/", :error => "Esta nota no te pertenece o no existe"
   end
 end
 
